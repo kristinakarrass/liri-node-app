@@ -1,28 +1,47 @@
-// make switch function a function to be called at beginning and in do what it says funtion
-
 // Include the request npm package
 var request = require('request');
-
+//grab user input and convert them into variables
 var command = process.argv[2];
+var inputArr = process.argv;
+var title = "";
 
-switch (command) {
-    case "my-tweets":
-        tweets();
-        break;
-
-    case "spotify-this-song":
-        var title = process.argv[3];
-        spotify(title);
-        break;
-
-    case "movie-this":
-        movie();
-        break;
-
-    case "do-what-it-says":
-        doWhatItSays();
-        break;
+//convert input to title variable for movie-this and spotify-this-song
+if (!inputArr[4]) {
+    title = inputArr[3];
+} else {
+    for (var i = 3; i < inputArr.length; i++) {
+        if (i > 3 && i < inputArr.length) {
+            title += "+" + inputArr[i];
+        }
+    } //ends for loop
 }
+
+function commandInput() {
+    //ask for a valid input if the user has not provided one
+    if (!command) {
+        console.log("Please give us a valid command: my-tweets, spotify-this-song, movie-this or do-what-it-says.");
+    } else {
+        //run appropriate command
+        switch (command) {
+            case "my-tweets":
+                tweets();
+                break;
+
+            case "spotify-this-song":
+                spotify(title);
+                break;
+
+            case "movie-this":
+                movie(title);
+                break;
+
+            case "do-what-it-says":
+                doWhatItSays();
+                break;
+        }
+    }
+} // closes function commandInput
+
 
 function tweets() {
     var keys = require('./keys.js');
@@ -44,7 +63,14 @@ function tweets() {
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
             for (var i = 0; i < tweets.length; i++) {
+                console.log("===================================================================================================");
+                console.log("");
                 console.log(tweets[i].text);
+                console.log("");
+                console.log(tweets[i].created_at);
+                console.log("");
+                console.log("===================================================================================================");
+                
                 if (i === 20) {
                     return;
                 }
@@ -55,17 +81,21 @@ function tweets() {
 
 
 
-function spotify(title) {
+function spotify() {
     var spotify = require("spotify");
     // var title = process.argv[3];
     if (!title) {
         //query for the song "The Sign" of Ace of Base if no user input available
         spotify.search({ type: "track", query: "The Sign" }, function(err, data) {
             var result = data.tracks.items[3];
+            console.log("==============================================================================");
+            console.log("");
             console.log("Artist: " + result.artists[0].name);
             console.log("Song: " + result.name);
             console.log("Preview URL: " + result.preview_url);
             console.log("Album name: " + result.album.name);
+            console.log("");
+            console.log("==============================================================================");
         })
     } else {
         spotify.search({ type: "track", query: title }, function(err, data) {
@@ -75,10 +105,14 @@ function spotify(title) {
                 } else {
                     //use first available track and put data in variable
                     var result = data.tracks.items[1];
+                    console.log("==============================================================================");
+                    console.log("");
                     console.log("Artist: " + result.artists[0].name);
                     console.log("Song: " + result.name);
                     console.log("Preview URL: " + result.preview_url);
                     console.log("Album name: " + result.album.name);
+                    console.log("");
+                    console.log("==============================================================================");
                 }
             }) //end search query
     }
@@ -87,30 +121,20 @@ function spotify(title) {
 
 
 function movie() {
-    // puts movie input into variable
-    var movieArgs = process.argv;
-    var movieName = "";
-    // console.log(movieArgs);
-    if (!movieArgs[3]) {
-        movieName = "Mr.Nobody";
-        // console.log(movieName);
-    } else {
-        movieName = movieArgs[3];
-        for (var i = 3; i < movieArgs.length; i++) {
-            if (i > 3 && i < movieArgs.length) {
-                movieName = movieName + "+" + movieArgs[i];
-            }
-        } //ends for loop
-    } // ends else statement
+    // if there is no title provided, print out information for Mr Nobody
+    if (!title) {
+        title = "Mr.Nobody";
+    }
     // Then run a request to the OMDB API with the movie specified
-    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&r=json&tomatoes=true";
+    var queryUrl = "http://www.omdbapi.com/?t=" + title + "&y=&plot=short&r=json&tomatoes=true";
 
     request(queryUrl, function(error, response, body) {
 
         // If the request is successful
         if (!error && response.statusCode === 200) {
-        	// console.log(body);
             // Parse the body of the site and recover title, year, IMDB rating, country, language, plot, actors, rotten tomatoes
+            console.log("==============================================================================");
+            console.log("");
             console.log("Title: " + JSON.parse(body).Title);
             console.log("Release Year: " + JSON.parse(body).Year);
             console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
@@ -119,7 +143,8 @@ function movie() {
             console.log("Plot: " + JSON.parse(body).Plot);
             console.log("Actors: " + JSON.parse(body).Actors);
             console.log("Rotten Tomatoes: " + JSON.parse(body).tomatoURL);
-
+            console.log("");
+            console.log("==============================================================================");
         }
     });
 } // end movie function
@@ -128,25 +153,17 @@ function movie() {
 function doWhatItSays() {
     fs = require("fs");
     fs.readFile("random.txt", "utf8", function(error, data) {
+        // console.log(data);
         var dataArr = data.split(",");
-        var command = dataArr[0];
-        var title = dataArr[1];
-        switch (command) {
-            case "my-tweets":
-                tweets();
-                break;
-
-            case "spotify-this-song":
-                spotify(title);
-                break;
-
-            case "movie-this":
-                movie();
-                break;
-
-            case "do-what-it-says":
-                doWhatItSays();
-                break;
+        command = dataArr[0];
+        title = dataArr[1];
+        //replace spaces in title with plus sign for OMDB request
+        if (command === "movie-this") {
+            title = title.replace(/ /gi, "+");
+            // console.log(title);
         }
+        commandInput(command, title);
     })
 }
+
+commandInput(command, title);
