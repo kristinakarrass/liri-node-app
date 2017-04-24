@@ -1,9 +1,13 @@
+// grab the fs package to handle writing results in results.txt file
+var fs = require("fs");
 // Include the request npm package
 var request = require('request');
 //grab user input and convert them into variables
 var command = process.argv[2];
 var inputArr = process.argv;
 var title = "";
+var results = "";
+var answer = [];
 
 //convert input to title variable for movie-this and spotify-this-song
 if (!inputArr[4]) {
@@ -42,7 +46,6 @@ function commandInput() {
     }
 } // closes function commandInput
 
-
 function tweets() {
     var keys = require('./keys.js');
     //store keys in variables
@@ -62,6 +65,7 @@ function tweets() {
     var params = { screen_name: 'ConsoleLogger' };
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
+            fs.appendFileSync("results.txt", "\n" + "20 most recent tweets: " + "\n");
             for (var i = 0; i < tweets.length; i++) {
                 console.log("===================================================================================================");
                 console.log("");
@@ -70,7 +74,10 @@ function tweets() {
                 console.log(tweets[i].created_at);
                 console.log("");
                 console.log("===================================================================================================");
-                
+                fs.appendFileSync("results.txt", "\n" + tweets[i].created_at + "\n");
+                fs.appendFileSync("results.txt", "\n" + tweets[i].text + "\n\n");
+                fs.appendFileSync("results.txt", "=============================================================================================");
+
                 if (i === 20) {
                     return;
                 }
@@ -78,8 +85,6 @@ function tweets() {
         } // ends if not error
     }); // ends client get function
 }; // end tweets function
-
-
 
 function spotify() {
     var spotify = require("spotify");
@@ -118,8 +123,6 @@ function spotify() {
     }
 } //end spotify function
 
-
-
 function movie() {
     // if there is no title provided, print out information for Mr Nobody
     if (!title) {
@@ -149,7 +152,6 @@ function movie() {
     });
 } // end movie function
 
-
 function doWhatItSays() {
     fs = require("fs");
     fs.readFile("random.txt", "utf8", function(error, data) {
@@ -165,5 +167,23 @@ function doWhatItSays() {
         commandInput(command, title);
     })
 }
+
+// function appendResults(){
+// // We append the results of our searches into the file
+// // If the file didn't exist then it gets created on the fly.
+// fs.appendFile(results.txt, results, function(err) {
+
+//   // If an error was experienced we say it.
+//   if (err) {
+//     console.log(err);
+//   }
+
+//   // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+//   else {
+//     console.log("Content Added!");
+//   }
+
+// });
+// }
 
 commandInput(command, title);
