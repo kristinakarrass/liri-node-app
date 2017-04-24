@@ -65,6 +65,7 @@ function tweets() {
     var params = { screen_name: 'ConsoleLogger' };
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
+            //append title of data to be displayed
             fs.appendFileSync("results.txt", "\n" + "20 most recent tweets: " + "\n");
             for (var i = 0; i < tweets.length; i++) {
                 console.log("===================================================================================================");
@@ -77,7 +78,7 @@ function tweets() {
                 fs.appendFileSync("results.txt", "\n" + tweets[i].created_at + "\n");
                 fs.appendFileSync("results.txt", "\n" + tweets[i].text + "\n\n");
                 fs.appendFileSync("results.txt", "=============================================================================================");
-
+                //in there are less than 20 tweets, there will be no error
                 if (i === 20) {
                     return;
                 }
@@ -93,14 +94,25 @@ function spotify() {
         //query for the song "The Sign" of Ace of Base if no user input available
         spotify.search({ type: "track", query: "The Sign" }, function(err, data) {
             var result = data.tracks.items[3];
+            var artist = result.artists[0].name;
+            var song = result.name;
+            var preURL = result.preview_url;
+            var album = result.album.name;
             console.log("==============================================================================");
             console.log("");
-            console.log("Artist: " + result.artists[0].name);
-            console.log("Song: " + result.name);
-            console.log("Preview URL: " + result.preview_url);
-            console.log("Album name: " + result.album.name);
+            console.log("Artist: " + artist);
+            console.log("Song: " + song);
+            console.log("Preview URL: " + preURL);
+            console.log("Album name: " + album);
             console.log("");
             console.log("==============================================================================");
+            fs.appendFileSync("results.txt", "=============================================================================================\n\n");
+            fs.appendFileSync("results.txt", "Yeah, this song will be stuck in your head for DAYS!!!")
+            fs.appendFileSync("results.txt", "\n" + artist + "\n");
+            fs.appendFileSync("results.txt", "\n" + song + "\n");
+            fs.appendFileSync("results.txt", "\n" + preURL + "\n");
+            fs.appendFileSync("results.txt", "\n" + album + "\n\n");
+            fs.appendFileSync("results.txt", "=============================================================================================\n");
         })
     } else {
         spotify.search({ type: "track", query: title }, function(err, data) {
@@ -110,14 +122,25 @@ function spotify() {
                 } else {
                     //use first available track and put data in variable
                     var result = data.tracks.items[1];
+                    var artist = result.artists[0].name;
+                    var song = result.name;
+                    var preURL = result.preview_url;
+                    var album = result.album.name;
                     console.log("==============================================================================");
                     console.log("");
-                    console.log("Artist: " + result.artists[0].name);
-                    console.log("Song: " + result.name);
-                    console.log("Preview URL: " + result.preview_url);
-                    console.log("Album name: " + result.album.name);
+                    console.log("Artist: " + artist);
+                    console.log("Song: " + song);
+                    console.log("Preview URL: " + preURL);
+                    console.log("Album name: " + album);
                     console.log("");
                     console.log("==============================================================================");
+                    fs.appendFileSync("results.txt", "=============================================================================================\n\n");
+                    fs.appendFileSync("results.txt", "Here is the song you were looking for: \n")
+                    fs.appendFileSync("results.txt", "\n" + artist + "\n");
+                    fs.appendFileSync("results.txt", "\n" + song + "\n");
+                    fs.appendFileSync("results.txt", "\n" + preURL + "\n");
+                    fs.appendFileSync("results.txt", "\n" + album + "\n\n");
+                    fs.appendFileSync("results.txt", "=============================================================================================\n");
                 }
             }) //end search query
     }
