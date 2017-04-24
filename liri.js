@@ -75,9 +75,10 @@ function tweets() {
                 console.log(tweets[i].created_at);
                 console.log("");
                 console.log("===================================================================================================");
+                fs.appendFileSync("results.txt", "\n\n" + "Tweet Nr. " + (i+1) + "\n");
                 fs.appendFileSync("results.txt", "\n" + tweets[i].created_at + "\n");
                 fs.appendFileSync("results.txt", "\n" + tweets[i].text + "\n\n");
-                fs.appendFileSync("results.txt", "=============================================================================================");
+                fs.appendFileSync("results.txt", "=============================================================================================\n");
                 //in there are less than 20 tweets, there will be no error
                 if (i === 20) {
                     return;
@@ -107,7 +108,7 @@ function spotify() {
             console.log("");
             console.log("==============================================================================");
             fs.appendFileSync("results.txt", "=============================================================================================\n\n");
-            fs.appendFileSync("results.txt", "Yeah, this song will be stuck in your head for DAYS!!!")
+            fs.appendFileSync("results.txt", "Yeah, this song will be stuck in your head for DAYS!!!\n");
             fs.appendFileSync("results.txt", "\n" + artist + "\n");
             fs.appendFileSync("results.txt", "\n" + song + "\n");
             fs.appendFileSync("results.txt", "\n" + preURL + "\n");
@@ -135,7 +136,7 @@ function spotify() {
                     console.log("");
                     console.log("==============================================================================");
                     fs.appendFileSync("results.txt", "=============================================================================================\n\n");
-                    fs.appendFileSync("results.txt", "Here is the song you were looking for: \n")
+                    fs.appendFileSync("results.txt", "Here is the song you were looking for: \n");
                     fs.appendFileSync("results.txt", "\n" + artist + "\n");
                     fs.appendFileSync("results.txt", "\n" + song + "\n");
                     fs.appendFileSync("results.txt", "\n" + preURL + "\n");
@@ -159,18 +160,38 @@ function movie() {
         // If the request is successful
         if (!error && response.statusCode === 200) {
             // Parse the body of the site and recover title, year, IMDB rating, country, language, plot, actors, rotten tomatoes
+            var movieTitle = JSON.parse(body).Title;
+            var year = JSON.parse(body).Year;
+            var IMDBRating = JSON.parse(body).imdbRating;
+            var country = JSON.parse(body).Country;
+            var language = JSON.parse(body).Language;
+            var plot = JSON.parse(body).Plot;
+            var actors = JSON.parse(body).Actors;
+            var tomatoURL = JSON.parse(body).tomatoURL;
             console.log("==============================================================================");
             console.log("");
-            console.log("Title: " + JSON.parse(body).Title);
-            console.log("Release Year: " + JSON.parse(body).Year);
-            console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
-            console.log("Country: " + JSON.parse(body).Country);
-            console.log("Language: " + JSON.parse(body).Language);
-            console.log("Plot: " + JSON.parse(body).Plot);
-            console.log("Actors: " + JSON.parse(body).Actors);
-            console.log("Rotten Tomatoes: " + JSON.parse(body).tomatoURL);
+            console.log("Title: " + movieTitle);
+            console.log("Release Year: " + year);
+            console.log("IMDB Rating: " + IMDBRating);
+            console.log("Country: " + country);
+            console.log("Language: " + language);
+            console.log("Plot: " + plot);
+            console.log("Actors: " + actors);
+            console.log("Rotten Tomatoes: " + tomatoURL);
             console.log("");
             console.log("==============================================================================");
+            //append movie info to results.txt file
+            fs.appendFileSync("results.txt", "=============================================================================================\n\n");
+            fs.appendFileSync("results.txt", "Movie Info: \n");
+            fs.appendFileSync("results.txt", "\n" + movieTitle + "\n");
+            fs.appendFileSync("results.txt", "\n" + year + "\n");
+            fs.appendFileSync("results.txt", "\n" + IMDBRating + "\n");
+            fs.appendFileSync("results.txt", "\n" + country + "\n");
+            fs.appendFileSync("results.txt", "\n" + language + "\n");
+            fs.appendFileSync("results.txt", "\n" + plot + "\n");
+            fs.appendFileSync("results.txt", "\n" + actors + "\n");
+            fs.appendFileSync("results.txt", "\n" + tomatoURL + "\n\n");
+            fs.appendFileSync("results.txt", "=============================================================================================\n");
         }
     });
 } // end movie function
