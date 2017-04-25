@@ -67,7 +67,7 @@ function tweets() {
         if (!error) {
             //append title of data to be displayed
             fs.appendFileSync("results.txt", "\n" + "20 most recent tweets: " + "\n");
-            for (var i = 0; i < tweets.length; i++) {
+            for (var i = 0; i < 20; i++) {
                 console.log("===================================================================================================");
                 console.log("");
                 console.log(tweets[i].text);
@@ -79,10 +79,6 @@ function tweets() {
                 fs.appendFileSync("results.txt", "\n" + tweets[i].created_at + "\n");
                 fs.appendFileSync("results.txt", "\n" + tweets[i].text + "\n\n");
                 fs.appendFileSync("results.txt", "=============================================================================================\n");
-                //in there are less than 20 tweets, there will be no error
-                if (i === 20) {
-                    return;
-                }
             } //ends for loop
         } // ends if not error
     }); // ends client get function
