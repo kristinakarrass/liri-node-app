@@ -13,8 +13,8 @@ var answer = [];
 if (!inputArr[4]) {
     title = inputArr[3];
 } else {
-    for (var i = 3; i < inputArr.length; i++) {
-        if (i > 3 && i < inputArr.length) {
+    for (var i = 2; i < inputArr.length; i++) {
+        if (i > 2 && i < inputArr.length) {
             title += "+" + inputArr[i];
         }
     } //ends for loop
