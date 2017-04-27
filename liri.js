@@ -75,10 +75,13 @@ function tweets() {
                 console.log(tweets[i].created_at);
                 console.log("");
                 console.log("===================================================================================================");
-                fs.appendFileSync("results.txt", "\n\n" + "Tweet Nr. " + (i+1) + "\n");
-                fs.appendFileSync("results.txt", "\n" + tweets[i].created_at + "\n");
-                fs.appendFileSync("results.txt", "\n" + tweets[i].text + "\n\n");
-                fs.appendFileSync("results.txt", "=============================================================================================\n");
+                fs.appendFileSync("results.txt", "\n\n" + "Tweet Nr. " + (i + 1) + "\n\n" + tweets[i].created_at + "\n\n" + tweets[i].text +
+                    "\n\n=============================================================================================\n",
+                    function(err) {
+                        if (!err) {
+                            console.log("working");
+                        }
+                    });
             } //ends for loop
         } // ends if not error
     }); // ends client get function
@@ -86,7 +89,6 @@ function tweets() {
 
 function spotify() {
     var spotify = require("spotify");
-    // var title = process.argv[3];
     if (!title) {
         //query for the song "The Sign" of Ace of Base if no user input available
         spotify.search({ type: "track", query: "The Sign" }, function(err, data) {
@@ -103,13 +105,14 @@ function spotify() {
             console.log("Album name: " + album);
             console.log("");
             console.log("==============================================================================");
-            fs.appendFileSync("results.txt", "=============================================================================================\n\n");
-            fs.appendFileSync("results.txt", "Yeah, this song will be stuck in your head for DAYS!!!\n");
-            fs.appendFileSync("results.txt", "\n" + artist + "\n");
-            fs.appendFileSync("results.txt", "\n" + song + "\n");
-            fs.appendFileSync("results.txt", "\n" + preURL + "\n");
-            fs.appendFileSync("results.txt", "\n" + album + "\n\n");
-            fs.appendFileSync("results.txt", "=============================================================================================\n");
+            fs.appendFileSync("results.txt", "=============================================================================================\n\nYeah, this song will be stuck in your head for DAYS!!!\n\n" +
+                artist + "\n\n" + song + "\n\n" + preURL + "\n\n" + album + "\n\n=============================================================================================\n",
+                function(err) {
+                    if (!err) {
+                        console.log("working");
+                    }
+                });
+
         })
     } else {
         spotify.search({ type: "track", query: title }, function(err, data) {
@@ -131,13 +134,14 @@ function spotify() {
                     console.log("Album name: " + album);
                     console.log("");
                     console.log("==============================================================================");
-                    fs.appendFileSync("results.txt", "=============================================================================================\n\n");
-                    fs.appendFileSync("results.txt", "Here is the song you were looking for: \n");
-                    fs.appendFileSync("results.txt", "\n" + artist + "\n");
-                    fs.appendFileSync("results.txt", "\n" + song + "\n");
-                    fs.appendFileSync("results.txt", "\n" + preURL + "\n");
-                    fs.appendFileSync("results.txt", "\n" + album + "\n\n");
-                    fs.appendFileSync("results.txt", "=============================================================================================\n");
+                    fs.appendFileSync("results.txt", "=============================================================================================\n\nHere is the song you were looking for: \n\n" +
+                        artist + "\n\n" + song + "\n\n" + preURL + "\n\n" + album + "\n\n=============================================================================================\n",
+                        function(err) {
+                            if (!err) {
+                                console.log("working");
+                            }
+                        });
+
                 }
             }) //end search query
     }
@@ -177,17 +181,15 @@ function movie() {
             console.log("");
             console.log("==============================================================================");
             //append movie info to results.txt file
-            fs.appendFileSync("results.txt", "=============================================================================================\n\n");
-            fs.appendFileSync("results.txt", "Movie Info: \n");
-            fs.appendFileSync("results.txt", "\n" + movieTitle + "\n");
-            fs.appendFileSync("results.txt", "\n" + year + "\n");
-            fs.appendFileSync("results.txt", "\n" + IMDBRating + "\n");
-            fs.appendFileSync("results.txt", "\n" + country + "\n");
-            fs.appendFileSync("results.txt", "\n" + language + "\n");
-            fs.appendFileSync("results.txt", "\n" + plot + "\n");
-            fs.appendFileSync("results.txt", "\n" + actors + "\n");
-            fs.appendFileSync("results.txt", "\n" + tomatoURL + "\n\n");
-            fs.appendFileSync("results.txt", "=============================================================================================\n");
+            fs.appendFile("results.txt", "=============================================================================================\n\nMovie Info: \n\n" +
+                movieTitle + "\n\n" + year + "\n\n" + IMDBRating + "\n\n" + country + "\n\n" + language + "\n\n" + plot + "\n\n" + actors + "\n\n" +
+                tomatoURL + "\n\n=============================================================================================\n",
+                function(err) {
+                    if (!err) {
+                        console.log("worked!");
+                    }
+                });
+
         }
     });
 } // end movie function
