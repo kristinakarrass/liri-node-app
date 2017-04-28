@@ -75,7 +75,7 @@ function tweets() {
                 console.log(tweets[i].created_at);
                 console.log("");
                 console.log("===================================================================================================");
-                fs.appendFileSync("results.txt", "\n\n" + "Tweet Nr. " + (i + 1) + "\n\n" + tweets[i].created_at + "\n\n" + tweets[i].text +
+                fs.appendFile("results.txt", "\n\n" + "Tweet Nr. " + (i + 1) + "\n\n" + tweets[i].created_at + "\n\n" + tweets[i].text +
                     "\n\n=============================================================================================\n",
                     function(err) {
                         if (!err) {
@@ -105,7 +105,7 @@ function spotify() {
             console.log("Album name: " + album);
             console.log("");
             console.log("==============================================================================");
-            fs.appendFileSync("results.txt", "=============================================================================================\n\nYeah, this song will be stuck in your head for DAYS!!!\n\n" +
+            fs.appendFile("results.txt", "=============================================================================================\n\nYeah, this song will be stuck in your head for DAYS!!!\n\n" +
                 artist + "\n\n" + song + "\n\n" + preURL + "\n\n" + album + "\n\n=============================================================================================\n",
                 function(err) {
                     if (!err) {
@@ -134,7 +134,7 @@ function spotify() {
                     console.log("Album name: " + album);
                     console.log("");
                     console.log("==============================================================================");
-                    fs.appendFileSync("results.txt", "=============================================================================================\n\nHere is the song you were looking for: \n\n" +
+                    fs.appendFile("results.txt", "=============================================================================================\n\nHere is the song you were looking for: \n\n" +
                         artist + "\n\n" + song + "\n\n" + preURL + "\n\n" + album + "\n\n=============================================================================================\n",
                         function(err) {
                             if (!err) {
