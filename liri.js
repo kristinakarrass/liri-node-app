@@ -78,8 +78,8 @@ function tweets() {
                 fs.appendFile("results.txt", "\n\n" + "Tweet Nr. " + (i + 1) + "\n\n" + tweets[i].created_at + "\n\n" + tweets[i].text +
                     "\n\n=============================================================================================\n",
                     function(err) {
-                        if (!err) {
-                            console.log("working");
+                        if (err) {
+                            console.log(err);
                         }
                     });
             } //ends for loop
@@ -108,8 +108,8 @@ function spotify() {
             fs.appendFile("results.txt", "=============================================================================================\n\nYeah, this song will be stuck in your head for DAYS!!!\n\n" +
                 artist + "\n\n" + song + "\n\n" + preURL + "\n\n" + album + "\n\n=============================================================================================\n",
                 function(err) {
-                    if (!err) {
-                        console.log("working");
+                    if (err) {
+                        console.log(err);
                     }
                 });
 
@@ -137,8 +137,8 @@ function spotify() {
                     fs.appendFile("results.txt", "=============================================================================================\n\nHere is the song you were looking for: \n\n" +
                         artist + "\n\n" + song + "\n\n" + preURL + "\n\n" + album + "\n\n=============================================================================================\n",
                         function(err) {
-                            if (!err) {
-                                console.log("working");
+                            if (err) {
+                                console.log(err);
                             }
                         });
 
@@ -185,8 +185,8 @@ function movie() {
                 movieTitle + "\n\n" + year + "\n\n" + IMDBRating + "\n\n" + country + "\n\n" + language + "\n\n" + plot + "\n\n" + actors + "\n\n" +
                 tomatoURL + "\n\n=============================================================================================\n",
                 function(err) {
-                    if (!err) {
-                        console.log("worked!");
+                    if (err) {
+                        console.log(err);
                     }
                 });
 
